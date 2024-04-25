@@ -32,6 +32,59 @@
         </dependency>
 
         <!--Add other dependencies you need here-->
+        
+        
+        
+        
+        
+        
+        
+        
+         <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+        <version>2.6.4</version> <!-- or the version you're using -->
+    </dependency>
+    
+    <!-- Spring Boot Starter Web for Spring Web MVC -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>2.6.4</version> <!-- or the version you're using -->
+    </dependency>
+    
+    <!-- Spring Boot Starter Test -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <version>2.6.4</version> <!-- or the version you're using -->
+        <scope>test</scope>
+    </dependency>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
     </dependencies>
 
