@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Application</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .balance {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Your Banking App</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Load Funds</h2>
+                <form id="loadForm">
+                    <div class="form-group">
+                        <label for="loadUserId">User ID:</label>
+                        <input type="number" class="form-control" id="loadUserId" placeholder="Enter User ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="loadAmount">Amount:</label>
+                        <input type="number" class="form-control" id="loadAmount" placeholder="Enter Amount">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Load Funds</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2>Authorize Transaction</h2>
+                <form id="authForm">
+                    <div class="form-group">
+                        <label for="authUserId">User ID:</label>
+                        <input type="number" class="form-control" id="authUserId" placeholder="Enter User ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="authAmount">Amount:</label>
+                        <input type="number" class="form-control" id="authAmount" placeholder="Enter Amount">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Authorize Transaction</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="balance" id="balanceDisplay">User ID: <span id="userIdDisplay"></span> | Current Balance: $<span id="balanceAmount"></span></div>
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#loadForm').submit(function (event) {
+                event.preventDefault();
+                var userId = $('#loadUserId').val();
+                var amount = $('#loadAmount').val();
+                $.ajax({
+                    type: 'PUT',
+                    url: '/loads',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ userId: parseInt(userId), amount: parseFloat(amount) }),
+                    success: function (data) {
+                        $('#balanceDisplay').text('User ID: ' + userId + ' | Current Balance: $' + data.toFixed(2));
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            $('#authForm').submit(function (event) {
+                event.preventDefault();
+                console.log("Authorization form submitted");
+                var userId = $('#authUserId').val();
+                var amount = $('#authAmount').val();
+                $.ajax({
+                    type: 'PUT',
+                    url: '/authorizations',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ userId: parseInt(userId), amount: parseFloat(amount) }),
+                    success: function (data) {
+                        console.log("Authorization request successful");
+                        $('#balanceDisplay').text('User ID: ' + userId + ' | Current Balance: $' + data.toFixed(2));
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

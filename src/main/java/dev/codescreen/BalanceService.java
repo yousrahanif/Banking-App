@@ -25,18 +25,37 @@ public class BalanceService {
         return balances.get(request.getUserId());
     }
 
+//    @PutMapping("/authorizations")
+//    public Object processAuthorization(@RequestBody TransactionRequest request) {
+//        int userId = request.getUserId();
+//        double amount = request.getAmount();
+//
+//        TransactionAuthorizedEvent event = new TransactionAuthorizedEvent(userId, amount);
+//        eventStore.add(event);
+//        applyEvent(event); 
+//        return new HashMap<String, Double>() {{
+//            put("balance", balances.get(userId));
+//        }};
+//    }
+    
     @PutMapping("/authorizations")
-    public Object processAuthorization(@RequestBody TransactionRequest request) {
+    public double processAuthorization(@RequestBody TransactionRequest request) {
         int userId = request.getUserId();
         double amount = request.getAmount();
 
+        System.out.println("Authorization request received for User ID: " + userId + ", Amount: " + amount);
+
         TransactionAuthorizedEvent event = new TransactionAuthorizedEvent(userId, amount);
         eventStore.add(event);
-        applyEvent(event); 
-        return new HashMap<String, Double>() {{
-            put("balance", balances.get(userId));
-        }};
+        applyEvent(event);
+
+        double newBalance = balances.get(userId);
+        System.out.println("New balance after authorization: " + newBalance);
+
+        return newBalance;
     }
+
+
 
     private void applyEvent(Object event) {
         if (event instanceof FundsLoadedEvent) {
