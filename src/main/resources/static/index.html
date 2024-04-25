@@ -10,12 +10,35 @@
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
+            text-align: center; 
+        }
+        .app-heading {
+            text-align: center;
+            color: #007bff; 
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px; 
+        }
+        #userIdDisplay {
+            display: inline-block;
+            width: auto;
+            border: none;
+            background-color: transparent;
+            font-weight: bold;
+            text-align: center;
+            outline: none; 
+        }
+        .welcome-text {
+            color: #28a745; 
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to Your Banking App</h1>
+        <h1 class="app-heading welcome-text">Welcome to Your Banking App</h1>
         
         <div class="row">
             <div class="col-md-6">
@@ -23,7 +46,7 @@
                 <form id="loadForm">
                     <div class="form-group">
                         <label for="loadUserId">User ID:</label>
-                        <input type="number" class="form-control" id="loadUserId" placeholder="Enter User ID">
+                        <input type="text" class="form-control" id="loadUserId" placeholder="Enter User ID">
                     </div>
                     <div class="form-group">
                         <label for="loadAmount">Amount:</label>
@@ -37,7 +60,7 @@
                 <form id="authForm">
                     <div class="form-group">
                         <label for="authUserId">User ID:</label>
-                        <input type="number" class="form-control" id="authUserId" placeholder="Enter User ID">
+                        <input type="text" class="form-control" id="authUserId" placeholder="Enter User ID">
                     </div>
                     <div class="form-group">
                         <label for="authAmount">Amount:</label>
@@ -48,7 +71,9 @@
             </div>
         </div>
         
-        <div class="balance" id="balanceDisplay">User ID: <span id="userIdDisplay"></span> | Current Balance: $<span id="balanceAmount"></span></div>
+        <div class="balance" id="balanceDisplay">
+            <span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true"></span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount"></span>
+        </div>
     </div>
 
     <script src="/js/bootstrap.bundle.min.js"></script>
@@ -63,9 +88,9 @@
                     type: 'PUT',
                     url: '/loads',
                     contentType: 'application/json',
-                    data: JSON.stringify({ userId: parseInt(userId), amount: parseFloat(amount) }),
+                    data: JSON.stringify({ userId: userId, amount: parseFloat(amount) }),
                     success: function (data) {
-                        $('#balanceDisplay').text('User ID: ' + userId + ' | Current Balance: $' + data.toFixed(2));
+                        $('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
                     },
                     error: function (xhr, status, error) {
                         console.error(xhr.responseText);
@@ -82,10 +107,10 @@
                     type: 'PUT',
                     url: '/authorizations',
                     contentType: 'application/json',
-                    data: JSON.stringify({ userId: parseInt(userId), amount: parseFloat(amount) }),
+                    data: JSON.stringify({ userId: userId, amount: parseFloat(amount) }),
                     success: function (data) {
                         console.log("Authorization request successful");
-                        $('#balanceDisplay').text('User ID: ' + userId + ' | Current Balance: $' + data.toFixed(2));
+                        $('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
                     },
                     error: function (xhr, status, error) {
                         console.error(xhr.responseText);
