@@ -46,6 +46,7 @@ public class BalanceService {
 
 
     
+
     @PutMapping("/authorizations")
     public ResponseEntity<Double> processAuthorization(@RequestBody TransactionRequest request) {
         int userId = request.getUserId();
@@ -68,9 +69,7 @@ public class BalanceService {
         double newBalance = balances.get(userId);
         System.out.println("New balance after authorization: " + newBalance);
 
-        // Add successful transaction to transaction history
-        addToTransactionHistory(userId, amount, "Authorization", LocalDateTime.now(), "Success");
-
+        // If the transaction was successful, return 200 status with the new balance
         return ResponseEntity.ok(newBalance);
     }
 

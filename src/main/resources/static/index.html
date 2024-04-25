@@ -196,6 +196,9 @@ function displayTransactionHistory(history) {
 
             // Authorization form submission
            // Authorization form submission
+// Authorization form submission
+// Authorization form submission
+// Authorization form submission
 $('#authForm').submit(function (event) {
     event.preventDefault();
     var userId = $('#authUserId').val();
@@ -229,19 +232,20 @@ $('#authForm').submit(function (event) {
         url: '/authorizations',
         contentType: 'application/json',
         data: JSON.stringify({ userId: userId, amount: parseFloat(amount) }),
-      success: function (data) {
-    console.log("Authorization request successful");
-    $('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
-    
-    addToTransactionHistory(userId, amount, "Authorization", new Date(), "Success");
+        success: function (data) {
+            console.log("Authorization request successful");
+            $('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
 
-    fetchAndDisplayTransactionHistory(userId); // Fetch and display transaction history after authorization
-},
+            // Fetch and display transaction history after authorization
+            fetchAndDisplayTransactionHistory(userId);
+        },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
             if (xhr.status === 400) {
-                // Add failed transaction to transaction history
-                addToTransactionHistory(userId, amount, "Authorization", new Date(), "Failed");
+                // Add failed transaction to transaction history only if it's not already there
+                if ($('.transaction-item.failed').length === 0) {
+                    addToTransactionHistory(userId, amount, "Authorization", new Date(), "Failed");
+                }
 
                 Swal.fire({
                     icon: 'error',
@@ -253,6 +257,7 @@ $('#authForm').submit(function (event) {
         }
     });
 });
+
 
             // Event listener for changes in the user ID field
             $('#userIdDisplay').on('input', function () {
