@@ -145,9 +145,10 @@ function displayTransactionHistory(history) {
             transactionItem.addClass('failed');
         }
 
-        transactionList.append(transactionItem);
+        transactionList.prepend(transactionItem); // Prepend transaction item to show new history on top
     });
 }
+
 
 
             // Load form submission
