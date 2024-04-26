@@ -46,32 +46,7 @@ public class BalanceService {
 
 
     
-//
-//    @PutMapping("/authorizations")
-//    public ResponseEntity<Double> processAuthorization(@RequestBody TransactionRequest request) {
-//        int userId = request.getUserId();
-//        double amount = request.getAmount();
-//
-//        System.out.println("Authorization request received for User ID: " + userId + ", Amount: " + amount);
-//
-//        if (!balances.containsKey(userId) || balances.get(userId) < amount) {
-//            // Add failed transaction to transaction history
-//            addToTransactionHistory(userId, amount, "Authorization", LocalDateTime.now(), "Failed");
-//
-//            // Return 400 status for insufficient balance
-//            return ResponseEntity.badRequest().body(null);
-//        }
-//
-//        TransactionAuthorizedEvent event = new TransactionAuthorizedEvent(userId, amount);
-//        eventStore.add(event);
-//        applyEvent(event);
-//
-//        double newBalance = balances.get(userId);
-//        System.out.println("New balance after authorization: " + newBalance);
-//
-//        // If the transaction was successful, return 200 status with the new balance
-//        return ResponseEntity.ok(newBalance);
-//    }
+
 
     @PutMapping("/authorizations")
     public ResponseEntity<Double> processAuthorization(@RequestBody TransactionRequest request) {
@@ -98,6 +73,8 @@ public class BalanceService {
         // If the transaction was successful, return 200 status with the new balance
         return ResponseEntity.ok(newBalance);
     }
+    
+
 
 
     private void applyEvent(Object event) {
@@ -120,13 +97,33 @@ public class BalanceService {
 
 
 
+//    private void addToTransactionHistory(int userId, double amount, String type, LocalDateTime timestamp, String status) {
+//        List<Transaction> userTransactions = transactionHistory.getOrDefault(userId, new ArrayList<>());
+//        userTransactions.add(new Transaction(amount, type, timestamp, status));
+//        transactionHistory.put(userId, userTransactions);
+//    }
+
+
     private void addToTransactionHistory(int userId, double amount, String type, LocalDateTime timestamp, String status) {
         List<Transaction> userTransactions = transactionHistory.getOrDefault(userId, new ArrayList<>());
+        if (status.equals("Failed")) {
+            // Check if there's a previous successful transaction for the same user ID
+            boolean previousSuccess = userTransactions.stream()
+                    .anyMatch(transaction -> transaction.getStatus().equals("Success"));
+            // If there's a previous successful transaction, add the failed authorization under it
+            if (previousSuccess) {
+                Transaction lastSuccess = userTransactions.stream()
+                        .filter(transaction -> transaction.getStatus().equals("Success"))
+                        .reduce((first, second) -> second)
+                        .orElse(null);
+                if (lastSuccess != null) {
+                    lastSuccess.setStatus("Failed");
+                }
+            }
+        }
         userTransactions.add(new Transaction(amount, type, timestamp, status));
         transactionHistory.put(userId, userTransactions);
     }
-
-
 
 
     static class FundsLoadedEvent {
@@ -214,6 +211,9 @@ public class BalanceService {
 
         public String getStatus() {
             return status;
+        }
+        public void setStatus(String status) {
+            this.status = status;
         }
     }
 }

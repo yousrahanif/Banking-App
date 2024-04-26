@@ -8,6 +8,15 @@
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
+		 body {
+            /* Set background image */
+            background-image: url('https://images.unsplash.com/photo-1633158829875-e5316a358c6f?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            /* Center and cover the background */
+            background-size: cover;
+            background-position: center;
+            /* Set background color as fallback */
+            background-color: #f8f9fa; /* Light gray color */
+        }
         .balance {
             font-size: 24px;
             font-weight: bold;
@@ -17,7 +26,7 @@
         .app-heading {
             text-align: center;
             color: #007bff; /* Bootstrap primary color */
-            margin-top: 30px;
+            margin-top: 360px;
             margin-bottom: 30px;
         }
         .form-group {
@@ -33,7 +42,7 @@
             outline: none; /* Remove outline on focus */
         }
         .welcome-text {
-            color: #28a745; /* Green color */
+            color: black; /* Green color */
             font-weight: bold;
         }
         .transaction-history {
@@ -53,13 +62,42 @@
         .transaction-item.failed {
             background-color: #f8d7da; /* Red background color for failed transactions */
         }
+        .transaction-item.success {
+            background-color: green; /* Light green background color for successful transactions */
+        }
+
+        /* Flexbox styling */
+        .forms-container {
+            display: flex;
+            justify-content: space-around; /* Center align forms with space around */
+            flex-wrap: wrap;
+            margin: 0 auto; /* Center the container */
+            max-width: 800px; /* Limit container width */
+        }
+
+        .col-md-6 {
+            flex-basis: 48%;
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: #007bff; /* Blue color */
+            border-color: #007bff; /* Blue color */
+            padding: 10px 10px; /* Larger padding for button */
+            font-size: 18px; /* Larger font size for button */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker blue color on hover */
+            border-color: #0056b3; /* Darker blue color on hover */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="app-heading welcome-text">Welcome to Your Banking App</h1>
         
-        <div class="row">
+        <div class="forms-container">
             <div class="col-md-6">
                 <h2>Load Funds</h2>
                 <form id="loadForm">
