@@ -11,45 +11,53 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
    <style>
        body {
-           /* Set background image */
+         
            background-image: url('https://images.unsplash.com/photo-1633158829875-e5316a358c6f?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-           /* Center and cover the background */
+           
            background-size: cover;
            background-position: center;
-           /* Set background color as fallback */
-           background-color: #f8f9fa; /* Light gray color */
+          
+           background-color: #f8f9fa; 
+           display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
        }
        .balance {
            font-size: 24px;
            font-weight: bold;
            margin-bottom: 20px;
-           text-align: center; /* Centering the balance display */
+           text-align: center; 
        }
        .app-heading {
            text-align: center;
-           color: #007bff; /* Bootstrap primary color */
-           margin-top: 100px; /* Adjusted margin for heading */
+           color: #007bff; 
+           margin-top: 100px; 
            margin-bottom: 30px;
        }
       .btn-group {
-   text-align: center; /* Center align the button group */
-   display: flex; /* Use flexbox for layout */
-   justify-content: center; /* Center items horizontally */
-   margin-top: 20px; /* Adjusted margin for button group */
+   text-align: center; 
+   display: flex; 
+   justify-content: center; 
+   margin-top: 20px; 
 }
 .btn-group .btn {
-   margin: 0 10px; /* Add some space between buttons */
-   flex: 1; /* Make buttons grow to fill available space equally */
+   margin: 0 10px;
+   flex: 1; 
+   padding: 40px 20px;
 }
        .form-group {
-           margin-bottom: 15px; /* Adding margin between form groups */
+           margin-bottom: 15px; 
         
        }
         #inputUserId {
-           width: 200px; /* Set a specific width for the input field */
-           margin: 0 auto; /* Center the input field */
-           display: block; /* Make it a block element for centering */
-           font-size: 14px; /* Adjust the font size */
+           width: 200px; 
+           margin: 0 auto; 
+           display: block; 
+           font-size: 14px; 
+           padding: 25px;
+           text-align: center;
+           font-weight: bold;
        }
       
        #userIdDisplay {
@@ -57,12 +65,12 @@
            width: auto;
            border: none;
            background-color: transparent;
-           font-weight: bold;
+           font-weight: bolder;
            text-align: center;
-           outline: none; /* Remove outline on focus */
+           outline: none; 
        }
        .welcome-text {
-           color: black; /* Green color */
+           color: black; 
            font-weight: bold;
        }
        .transaction-history {
@@ -80,33 +88,38 @@
            background-color:rgb(213, 255, 213);
        }
        .transaction-item.failed {
-           background-color: #f8d7da; /* Red background color for failed transactions */
+           background-color: #f8d7da; 
        }
        .transaction-item.success {
-           background-color: green; /* Light green background color for successful transactions */
+           background-color: green; 
        }
+       .funds-heading {
+    margin-top: 50px; 
+    text-align: center;
+}
+#loadButton { background-color: #007bff; } 
+#authButton { background-color: red; } 
+#historyButton { background-color: #28a745; } 
+#balanceButton { background-color: #ffc107; }
  </style>
 </head>
 <body>
    <div class="container">
        <h1 class="app-heading welcome-text">Welcome to Your Banking App</h1>
       
-       <!-- Buttons for actions: Load Funds, Authorize (Withdraw), and View Transaction History -->
-      <!-- Input field for User ID -->
+       
 <div class="form-group">
    <input type="text" class="form-control" id="inputUserId" placeholder="Enter User ID">
 </div>
-<!-- Buttons for actions: Load Funds, Authorize (Withdraw), and View Transaction History -->
 <div class="btn-group" role="group">
-   <button type="button" class="btn btn-primary" id="loadButton">Load Funds</button>
+  <button type="button" class="btn btn-primary" id="loadButton">Load Funds (Deposit)</button>
    <button type="button" class="btn btn-primary" id="authButton">Authorize (Withdraw)</button>
    <button type="button" class="btn btn-primary" id="historyButton">View Transaction History</button>
 <button type="button" class="btn btn-primary" id="balanceButton">View Total Balance</button>
 
 </div>
-       <!-- Load Funds Form -->
        <div id="loadForm" style="display: none;">
-           <h2>Load Funds</h2>
+           <h2 class="funds-heading">Load Funds</h2>
            <form id="loadForm">
                <div class="form-group">
                    <label for="loadUserId">User ID:</label>
@@ -119,10 +132,9 @@
                <button type="submit" class="btn btn-primary">Load Funds</button>
            </form>
        </div>
-       <!-- Authorize (Withdraw) Form (same as Load Funds Form) -->
-      <!-- Authorize (Withdraw) Form (same as Load Funds Form) -->
+    
 <div id="authForm" style="display: none;">
-   <h2>Authorize (Withdraw)</h2>
+   <h2 class="funds-heading">Authorize (Withdraw)</h2>
    <form id="authForm">
        <div class="form-group">
            <label for="authUserId">User ID:</label>
@@ -135,12 +147,11 @@
        <button type="submit" class="btn btn-primary">Authorize (Withdraw)</button>
    </form>
 </div>
-       <!-- Transaction History Section -->
        <div class="transaction-history" id="transactionList" style="display: none;">
-           <h2>Transaction History</h2>
+         
+           <h2 class="funds-heading">Transaction History</h2>
            <ul class="transaction-list"></ul>
        </div>
-       <!-- Total Balance Section -->
      
    </div>
    <script src="/js/bootstrap.bundle.min.js"></script>
@@ -149,11 +160,9 @@
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    <script>
    $(document).ready(function () {
-    // Show Load Funds Form when Load Funds button is clicked
     $('#loadButton').click(function () {
         var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
         if (userId === '') {
-            // Show warning if User ID field is empty
             Swal.fire({
                 icon: 'warning',
                 title: 'Warning',
@@ -162,7 +171,6 @@
             });
             return;
         }
-        // Proceed with showing Load Funds Form
         $('#loadForm').show();
         $('#authForm').hide();
         $('#transactionList').hide();
@@ -171,7 +179,6 @@
         $('#loadUserId').val(userId).prop('disabled', true);
     });
 
-    // Show Authorize (Withdraw) Form when Authorize button is clicked
     $('#authButton').click(function () {
         var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
         if (userId === '') {
@@ -184,7 +191,6 @@
             });
             return;
         }
-        // Proceed with showing Authorize (Withdraw) Form
         $('#authForm').show();
         $('#loadForm').hide();
         $('#transactionList').hide();
@@ -193,7 +199,6 @@
         $('#authUserId').val(userId).prop('disabled', true);
     });
 
-    // Fetch and display transaction history when View Transaction History button is clicked
     $('#historyButton').click(function () {
         var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
         if (userId === '') {
@@ -206,13 +211,11 @@
             });
             return;
         }
-        // Proceed with fetching and displaying transaction history
         fetchAndDisplayTransactionHistory(userId);
         $('#transactionList').show();
         $('#loadForm').hide();
         $('#authForm').hide();
     });
-           // Function to fetch and display transaction history
            function fetchAndDisplayTransactionHistory(userId) {
                $.ajax({
                    type: 'GET',
@@ -226,7 +229,6 @@
                    }
                });
            }
-           // Function to display transaction history
            function displayTransactionHistory(history) {
                var transactionList = $('#transactionList');
                transactionList.empty(); // Clear existing history
@@ -241,19 +243,16 @@
                        '<strong>Date:</strong> ' + formattedDate + '<br>' +
                        '<strong>Time:</strong> ' + formattedTime
                    );
-                   // Check if the transaction status is 'Failed' and add the 'failed' class accordingly
                    if (transaction.status === 'Failed') {
                        transactionItem.addClass('failed');
                    }
                    transactionList.prepend(transactionItem); // Prepend transaction item to show new history on top
                });
            }
-           // Function to calculate and display the total balance
-          // Function to calculate and display the total balance
+      
 function calculateTotalBalance(history) {
    var totalBalance = 0;
    if (history.length === 0) {
-       // If there are no transactions, set total balance to 0
        totalBalance = 0;
    } else {
        history.forEach(function (transaction) {
@@ -267,12 +266,10 @@ function calculateTotalBalance(history) {
    $('#totalBalanceAmount').text(totalBalance.toFixed(2));
    $('#totalBalance').show();
 }
-           // Load form submission
  $('#loadForm').submit(function (event) {
    event.preventDefault();
    var userId = $('#loadUserId').val();
    var amount = $('#loadAmount').val();
-   // Check if fields are empty
    if (!userId || !amount) {
        Swal.fire({
            icon: 'warning',
@@ -282,7 +279,6 @@ function calculateTotalBalance(history) {
        });
        return;
    }
-   // Additional validation logic
    if (parseFloat(amount) <= 0) {
        Swal.fire({
            icon: 'warning',
@@ -292,7 +288,6 @@ function calculateTotalBalance(history) {
        });
        return;
    }
-   // If all validations pass, proceed with AJAX request
    $.ajax({
        type: 'PUT',
        url: '/loads',
@@ -304,8 +299,7 @@ function calculateTotalBalance(history) {
 			
 			
            $('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
-           fetchAndDisplayTransactionHistory(userId); // Fetch and display transaction history after load
-           // Display success message
+           fetchAndDisplayTransactionHistory(userId); 
            Swal.fire({
                icon: 'success',
                title: 'Success',
@@ -318,12 +312,10 @@ function calculateTotalBalance(history) {
        }
    });
 });
-// Authorization form submission
 $('#authForm').submit(function (event) {
    event.preventDefault();
    var userId = $('#authUserId').val();
    var amount = $('#authAmount').val();
-   // Check if fields are empty
    if (!userId || !amount) {
        Swal.fire({
            icon: 'warning',
@@ -333,7 +325,6 @@ $('#authForm').submit(function (event) {
        });
        return;
    }
-   // Additional validation logic
    if (parseFloat(amount) <= 0) {
        Swal.fire({
            icon: 'warning',
@@ -343,7 +334,6 @@ $('#authForm').submit(function (event) {
        });
        return;
    }
-   // If all validations pass, proceed with AJAX request
    $.ajax({
        type: 'PUT',
        url: '/authorizations',
@@ -356,7 +346,6 @@ $('#authForm').submit(function (event) {
 			
            console.log("Authorization request successful");
            $('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
-           // Fetch and display transaction history after authorization
            fetchAndDisplayTransactionHistory(userId);
            // Display success message
            Swal.fire({
@@ -369,7 +358,6 @@ $('#authForm').submit(function (event) {
        error: function (xhr, status, error) {
            console.error(xhr.responseText);
            if (xhr.status === 400) {
-               // Add failed transaction to transaction history immediately
                addToTransactionHistory(userId, amount, "Authorization", new Date(), "Failed");
                Swal.fire({
                    icon: 'error',
@@ -381,12 +369,10 @@ $('#authForm').submit(function (event) {
        }
    });
 });
-           // Event listener for changes in the user ID field
            $('#userIdDisplay').on('input', function () {
                var userId = $(this).text();
                fetchAndDisplayTransactionHistory(userId);
            });
-           // Fetch and display transaction history for the initial user ID
            var initialUserId = $('#userIdDisplay').text();
            fetchAndDisplayTransactionHistory(initialUserId);
        });
@@ -394,8 +380,6 @@ $('#authForm').submit(function (event) {
        
        
        
-       // Event listener for the "View Total Balance" button
-// Event listener for the "View Total Balance" button
 $('#balanceButton').click(function () {
     var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
     if (userId === '') {
@@ -408,17 +392,14 @@ $('#balanceButton').click(function () {
         });
         return;
     }
-    // Proceed with calculating and displaying total balance
     calculateAndDisplayTotalBalance(userId);
 });
 
-// Function to calculate and display the total balance
 function calculateAndDisplayTotalBalance(userId) {
     $.ajax({
         type: 'GET',
         url: '/total-balance?userId=' + userId, // Assuming there's an endpoint to fetch total balance
         success: function (totalBalance) {
-            // Display total balance using SweetAlert
             Swal.fire({
                 icon: 'info',
                 title: 'Total Balance',
@@ -434,7 +415,6 @@ function calculateAndDisplayTotalBalance(userId) {
 
        
        
-       // Function to add failed authorization transaction to transaction history
        function addToTransactionHistory(userId, amount, type, timestamp, status) {
            var transactionList = $('#transactionList');
            var date = new Date(timestamp);
@@ -447,7 +427,7 @@ function calculateAndDisplayTotalBalance(userId) {
                '<strong>Date:</strong> ' + formattedDate + '<br>' +
                '<strong>Time:</strong> ' + formattedTime
            );
-           transactionList.prepend(transactionItem); // Add failed transaction to the beginning of the transaction history
+           transactionList.prepend(transactionItem); 
        }
    </script>
 </body>

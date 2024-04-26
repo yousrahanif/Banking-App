@@ -118,12 +118,9 @@ public class BalanceService {
     private void addToTransactionHistory(int userId, double amount, String type, LocalDateTime timestamp, String status) {
         List<Transaction> userTransactions = transactionHistory.getOrDefault(userId, new ArrayList<>());
 
-        // Check if the transaction is an authorization and it failed
         if (type.equals("Authorization") && status.equals("Failed")) {
-            // Add the failed authorization only to the transaction history of the corresponding user ID
             userTransactions.add(new Transaction(amount, type, timestamp, status));
         } else {
-            // For other types of transactions or successful authorizations, proceed as usual
             userTransactions.add(new Transaction(amount, type, timestamp, status));
         }
 
@@ -201,7 +198,6 @@ public class BalanceService {
             this.status = status;
         }
 
-        // Getters and setters for Jackson serialization
         public double getAmount() {
             return amount;
         }
