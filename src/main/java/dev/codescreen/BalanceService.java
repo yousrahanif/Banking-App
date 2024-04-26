@@ -1,4 +1,3 @@
-
 package dev.codescreen;
 
 import org.springframework.boot.SpringApplication;
@@ -75,6 +74,24 @@ public class BalanceService {
     }
     
 
+    @GetMapping("/total-balance")
+    public ResponseEntity<Double> getTotalBalance(@RequestParam int userId) {
+        List<Transaction> transactions = transactionHistory.getOrDefault(userId, Collections.emptyList());
+        double totalBalance = calculateTotalBalance(transactions);
+        return ResponseEntity.ok(totalBalance);
+    }
+
+    private double calculateTotalBalance(List<Transaction> transactions) {
+        double totalBalance = 0;
+        for (Transaction transaction : transactions) {
+            if (transaction.getType().equals("Load")) {
+                totalBalance += transaction.getAmount();
+            } else if (transaction.getType().equals("Authorization") && transaction.getStatus().equals("Success")) {
+                totalBalance -= transaction.getAmount();
+            }
+        }
+        return totalBalance;
+    }
 
 
     private void applyEvent(Object event) {
@@ -97,31 +114,19 @@ public class BalanceService {
 
 
 
-//    private void addToTransactionHistory(int userId, double amount, String type, LocalDateTime timestamp, String status) {
-//        List<Transaction> userTransactions = transactionHistory.getOrDefault(userId, new ArrayList<>());
-//        userTransactions.add(new Transaction(amount, type, timestamp, status));
-//        transactionHistory.put(userId, userTransactions);
-//    }
-
 
     private void addToTransactionHistory(int userId, double amount, String type, LocalDateTime timestamp, String status) {
         List<Transaction> userTransactions = transactionHistory.getOrDefault(userId, new ArrayList<>());
-        if (status.equals("Failed")) {
-            // Check if there's a previous successful transaction for the same user ID
-            boolean previousSuccess = userTransactions.stream()
-                    .anyMatch(transaction -> transaction.getStatus().equals("Success"));
-            // If there's a previous successful transaction, add the failed authorization under it
-            if (previousSuccess) {
-                Transaction lastSuccess = userTransactions.stream()
-                        .filter(transaction -> transaction.getStatus().equals("Success"))
-                        .reduce((first, second) -> second)
-                        .orElse(null);
-                if (lastSuccess != null) {
-                    lastSuccess.setStatus("Failed");
-                }
-            }
+
+        // Check if the transaction is an authorization and it failed
+        if (type.equals("Authorization") && status.equals("Failed")) {
+            // Add the failed authorization only to the transaction history of the corresponding user ID
+            userTransactions.add(new Transaction(amount, type, timestamp, status));
+        } else {
+            // For other types of transactions or successful authorizations, proceed as usual
+            userTransactions.add(new Transaction(amount, type, timestamp, status));
         }
-        userTransactions.add(new Transaction(amount, type, timestamp, status));
+
         transactionHistory.put(userId, userTransactions);
     }
 
@@ -240,7 +245,7 @@ public class BalanceService {
 
 
 
-
+//placeholder
 
 
 
