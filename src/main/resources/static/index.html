@@ -317,7 +317,11 @@ function calculateTotalBalance(history) {
            Swal.fire({
                icon: 'success',
                title: 'Success',
-                text: '$' + parseFloat(amount).toFixed(2) + ' loaded successfully!',
+                html: '<div><span style="color: green; font-weight: bold">$' + parseFloat(amount).toFixed(2) + '</span> loaded successfully!</div><div>Total Balance: <span style="color: red; font-weight: bold">$' + data.toFixed(2) + '</span></div>',
+               
+
+               
+               
                confirmButtonColor: '#007bff'
            });
        },
@@ -365,7 +369,11 @@ $('#authForm').submit(function (event) {
            Swal.fire({
                icon: 'success',
                title: 'Success',
-                text: '$' + parseFloat(amount).toFixed(2) + ' authorized successfully!',
+               // text: '$' + parseFloat(amount).toFixed(2) + ' authorized successfully! Your new balance is $' + data.toFixed(2),
+              
+              
+                html: '<div><span style="color: green; font-weight: bold">$' + parseFloat(amount).toFixed(2) + ' </span>  authorized successfully!</div><div>Total Balance:  <span style="color: red; font-weight: bold">$' + data.toFixed(2) + '</span></div>',
+
                confirmButtonColor: '#007bff'
            });
        },
