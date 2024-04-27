@@ -43,7 +43,7 @@ We are looking for attention in the following areas:
 
 
 ## Design considerations
-## Design considerations
+
 
 - **Modularization:** Breaking down the application into smaller, manageable components such as controllers, services, and models allows for easier maintenance and scalability.
 
