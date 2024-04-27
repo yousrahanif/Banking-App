@@ -22,10 +22,15 @@ public class BalanceService {
     }
 
 
+//    @GetMapping("/transaction-history")
+//    public List<Transaction> getTransactionHistory(@RequestParam int userId) {
+//        return transactionHistory.getOrDefault(userId, new ArrayList<>());
+//    }
     @GetMapping("/transaction-history")
-    public List<Transaction> getTransactionHistory(@RequestParam int userId) {
+    public List<Transaction> getTransactionHistory(@RequestParam(name = "userId") int userId) {
         return transactionHistory.getOrDefault(userId, new ArrayList<>());
     }
+
     
     
     @PutMapping("/loads")
@@ -47,12 +52,43 @@ public class BalanceService {
     
 
 
+//    @PutMapping("/authorizations")
+//    public ResponseEntity<Double> processAuthorization(@RequestBody TransactionRequest request) {
+//        int userId = request.getUserId();
+//        double amount = request.getAmount();
+//
+//        System.out.println("Authorization request received for User ID: " + userId + ", Amount: " + amount);
+//
+//        if (!balances.containsKey(userId) || balances.get(userId) < amount) {
+//            // Add failed transaction to transaction history
+//            addToTransactionHistory(userId, amount, "Authorization", LocalDateTime.now(), "Failed");
+//
+//            // Return 400 status for insufficient balance
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//
+//        TransactionAuthorizedEvent event = new TransactionAuthorizedEvent(userId, amount);
+//        eventStore.add(event);
+//        applyEvent(event);
+//
+//        double newBalance = balances.get(userId);
+//        System.out.println("New balance after authorization: " + newBalance);
+//
+//        // If the transaction was successful, return 200 status with the new balance
+//        return ResponseEntity.ok(newBalance);
+//    }
+//    
+    
     @PutMapping("/authorizations")
     public ResponseEntity<Double> processAuthorization(@RequestBody TransactionRequest request) {
         int userId = request.getUserId();
         double amount = request.getAmount();
 
         System.out.println("Authorization request received for User ID: " + userId + ", Amount: " + amount);
+
+        // Print out the user's balance
+        double userBalance = balances.getOrDefault(userId, 0.0);
+        System.out.println("User Balance: " + userBalance);
 
         if (!balances.containsKey(userId) || balances.get(userId) < amount) {
             // Add failed transaction to transaction history
@@ -72,7 +108,7 @@ public class BalanceService {
         // If the transaction was successful, return 200 status with the new balance
         return ResponseEntity.ok(newBalance);
     }
-    
+
 
     @GetMapping("/total-balance")
     public ResponseEntity<Double> getTotalBalance(@RequestParam int userId) {
