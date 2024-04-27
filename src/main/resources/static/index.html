@@ -122,11 +122,11 @@
            <h2 class="funds-heading">Load Funds</h2>
            <form id="loadForm">
                <div class="form-group">
-                   <label for="loadUserId">User ID:</label>
+<label for="loadUserId"><strong>User ID:</strong></label>
                    <input type="text" class="form-control" id="loadUserId" placeholder="Enter User ID">
                </div>
                <div class="form-group">
-                   <label for="loadAmount">Amount:</label>
+<label for="loadAmount"><strong>Amount:</strong></label>
                    <input type="number" class="form-control" id="loadAmount" placeholder="Enter Amount" step="0.01">
                </div>
                <button type="submit" class="btn btn-primary">Load Funds</button>
@@ -137,11 +137,11 @@
    <h2 class="funds-heading">Authorize (Withdraw)</h2>
    <form id="authForm">
        <div class="form-group">
-           <label for="authUserId">User ID:</label>
+<label for="authUserId"><strong>User ID:</strong></label>
            <input type="text" class="form-control" id="authUserId" placeholder="Enter User ID">
        </div>
        <div class="form-group">
-           <label for="authAmount">Amount:</label>
+<label for="authAmount"><strong>Amount:</strong></label>
            <input type="number" class="form-control" id="authAmount" placeholder="Enter Amount" step="0.01">
        </div>
        <button type="submit" class="btn btn-primary">Authorize (Withdraw)</button>
@@ -216,19 +216,33 @@
         $('#loadForm').hide();
         $('#authForm').hide();
     });
-           function fetchAndDisplayTransactionHistory(userId) {
-               $.ajax({
-                   type: 'GET',
-                   url: '/transaction-history?userId=' + userId,
-                   success: function (data) {
-                       displayTransactionHistory(data);
-                       calculateTotalBalance(data);
-                   },
-                   error: function (xhr, status, error) {
-                       console.error(xhr.responseText);
-                   }
-               });
-           }
+         function fetchAndDisplayTransactionHistory(userId) {
+    $.ajax({
+        type: 'GET',
+        url: '/transaction-history?userId=' + userId,
+        success: function (data) {
+            if (data.length === 0) {
+                
+                //$('#transactionList').html('<p>No transactions have occurred.</p>');
+           
+           Swal.fire({
+                    icon: 'info',
+                    title: 'No Transactions',
+                    text: 'No transactions have occurred.',
+                    confirmButtonColor: '#007bff'
+                }); 
+            
+            } else {
+                displayTransactionHistory(data);
+                calculateTotalBalance(data);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
            function displayTransactionHistory(history) {
                var transactionList = $('#transactionList');
                transactionList.empty(); // Clear existing history
