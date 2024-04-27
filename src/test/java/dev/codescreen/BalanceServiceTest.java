@@ -26,53 +26,51 @@ import dev.codescreen.BalanceService.TransactionRequest;
 @AutoConfigureMockMvc
 class BalanceServiceTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @MockBean
-    private BalanceService balanceService;
+	@MockBean
+	private BalanceService balanceService;
 
-    private List<Transaction> transactionHistory;
-    private TransactionRequest transactionRequest;
+	private List<Transaction> transactionHistory;
+	private TransactionRequest transactionRequest;
 
-    @BeforeEach
-    void setUp() {
-        transactionHistory = new ArrayList<>();
-        transactionHistory.add(new Transaction(100.0, "Load", LocalDateTime.now(), "Success"));
-        transactionHistory.add(new Transaction(50.0, "Authorization", LocalDateTime.now(), "Success"));
-        
-        transactionRequest = new TransactionRequest();
-        transactionRequest.setUserId(123);
-        transactionRequest.setAmount(50.0);
-    }
+	@BeforeEach
+	void setUp() {
+		transactionHistory = new ArrayList<>();
+		transactionHistory.add(new Transaction(100.0, "Load", LocalDateTime.now(), "Success"));
+		transactionHistory.add(new Transaction(50.0, "Authorization", LocalDateTime.now(), "Success"));
 
-    @Test
-    void testGetTransactionHistory() throws Exception {
-        when(balanceService.getTransactionHistory(123)).thenReturn(transactionHistory);
+		transactionRequest = new TransactionRequest();
+		transactionRequest.setUserId(123);
+		transactionRequest.setAmount(50.0);
+	}
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/transaction-history?userId=123"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].amount").value(100.0))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].type").value("Authorization"));
-    }
+	@Test
+	void testGetTransactionHistory() throws Exception {
+		when(balanceService.getTransactionHistory(123)).thenReturn(transactionHistory);
 
-    @Test
-    void testProcessLoad() throws Exception {
-        when(balanceService.processLoad(any(TransactionRequest.class))).thenReturn(150.0);
+		mockMvc.perform(MockMvcRequestBuilders.get("/transaction-history?userId=123"))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$[0].amount").value(100.0))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[1].type").value("Authorization"));
+	}
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/loads")
-                .content(asJsonString(transactionRequest))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("150.0"));
-    }
+	@Test
+	void testProcessLoad() throws Exception {
+		when(balanceService.processLoad(any(TransactionRequest.class))).thenReturn(150.0);
 
-    private String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+		mockMvc.perform(MockMvcRequestBuilders.put("/loads").content(asJsonString(transactionRequest))
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().string("150.0"));
+	}
+
+	private String asJsonString(final Object obj) {
+		try {
+			return new ObjectMapper().writeValueAsString(obj);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

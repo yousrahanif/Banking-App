@@ -1,456 +1,481 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Banking Application</title>
-   <link href="/css/bootstrap.min.css" rel="stylesheet">
-   <!-- SweetAlert2 CSS -->
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-   <style>
-       body {
-         
-           background-image: url('https://images.unsplash.com/photo-1633158829875-e5316a358c6f?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-           
-           background-size: cover;
-           background-position: center;
-          
-           background-color: #f8f9fa; 
-           display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-       }
-       .balance {
-           font-size: 24px;
-           font-weight: bold;
-           margin-bottom: 20px;
-           text-align: center; 
-       }
-       .app-heading {
-           text-align: center;
-           color: #007bff; 
-           margin-top: 100px; 
-           margin-bottom: 30px;
-       }
-      .btn-group {
-   text-align: center; 
-   display: flex; 
-   justify-content: center; 
-   margin-top: 20px; 
-}
-.btn-group .btn {
-   margin: 0 10px;
-   flex: 1; 
-   padding: 40px 20px;
-}
-       .form-group {
-           margin-bottom: 15px; 
-        
-       }
-        #inputUserId {
-           width: 200px; 
-           margin: 0 auto; 
-           display: block; 
-           font-size: 14px; 
-           padding: 25px;
-           text-align: center;
-           font-weight: bold;
-       }
-      
-       #userIdDisplay {
-           display: inline-block;
-           width: auto;
-           border: none;
-           background-color: transparent;
-           font-weight: bolder;
-           text-align: center;
-           outline: none; 
-       }
-       .welcome-text {
-           color: black; 
-           font-weight: bold;
-       }
-       .transaction-history {
-           margin-top: 30px;
-           text-align: center;
-       }
-       .transaction-list {
-           list-style-type: none;
-           padding: 0;
-       }
-       .transaction-item {
-           margin-bottom: 10px;
-           border: 1px solid #ccc;
-           padding: 10px;
-           background-color:rgb(213, 255, 213);
-       }
-       .transaction-item.failed {
-           background-color: #f8d7da; 
-       }
-       .transaction-item.success {
-           background-color: green; 
-       }
-       .funds-heading {
-    margin-top: 50px; 
-    text-align: center;
-}
-#loadButton { background-color: #007bff; } 
-#authButton { background-color: red; } 
-#historyButton { background-color: #28a745; } 
-#balanceButton { background-color: #ffc107; }
- </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Banking Application</title>
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+	<style>
+		body {
+
+			background-image: url('https://images.unsplash.com/photo-1633158829875-e5316a358c6f?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+
+			background-size: cover;
+			background-position: center;
+
+			background-color: #f8f9fa;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+		}
+
+		.balance {
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+
+		.app-heading {
+			text-align: center;
+			color: #007bff;
+			margin-top: 100px;
+			margin-bottom: 30px;
+		}
+
+		.btn-group {
+			text-align: center;
+			display: flex;
+			justify-content: center;
+			margin-top: 20px;
+		}
+
+		.btn-group .btn {
+			margin: 0 10px;
+			flex: 1;
+			padding: 40px 20px;
+		}
+
+		.form-group {
+			margin-bottom: 15px;
+
+		}
+
+		#inputUserId {
+			width: 200px;
+			margin: 0 auto;
+			display: block;
+			font-size: 14px;
+			padding: 25px;
+			text-align: center;
+			font-weight: bold;
+		}
+
+		#userIdDisplay {
+			display: inline-block;
+			width: auto;
+			border: none;
+			background-color: transparent;
+			font-weight: bolder;
+			text-align: center;
+			outline: none;
+		}
+
+		.welcome-text {
+			color: black;
+			font-weight: bold;
+		}
+
+		.transaction-history {
+			margin-top: 30px;
+			text-align: center;
+		}
+
+		.transaction-list {
+			list-style-type: none;
+			padding: 0;
+		}
+
+		.transaction-item {
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			padding: 10px;
+			background-color: rgb(213, 255, 213);
+		}
+
+		.transaction-item.failed {
+			background-color: #f8d7da;
+		}
+
+		.transaction-item.success {
+			background-color: green;
+		}
+
+		.funds-heading {
+			margin-top: 50px;
+			text-align: center;
+		}
+
+		#loadButton {
+			background-color: #007bff;
+		}
+
+		#authButton {
+			background-color: red;
+		}
+
+		#historyButton {
+			background-color: #28a745;
+		}
+
+		#balanceButton {
+			background-color: #ffc107;
+		}
+	</style>
 </head>
+
 <body>
-   <div class="container">
-       <h1 class="app-heading welcome-text">Welcome to Your Banking App</h1>
-      
-       
-<div class="form-group">
-   <input type="text" class="form-control" id="inputUserId" placeholder="Enter User ID">
-</div>
-<div class="btn-group" role="group">
-  <button type="button" class="btn btn-primary" id="loadButton">Load Funds (Deposit)</button>
-   <button type="button" class="btn btn-primary" id="authButton">Authorize (Withdraw)</button>
-   <button type="button" class="btn btn-primary" id="historyButton">View Transaction History</button>
-<button type="button" class="btn btn-primary" id="balanceButton">View Total Balance</button>
+	<div class="container">
+		<h1 class="app-heading welcome-text">Welcome to Your Banking App</h1>
 
-</div>
-       <div id="loadForm" style="display: none;">
-           <h2 class="funds-heading">Load Funds</h2>
-           <form id="loadForm">
-               <div class="form-group">
-<label for="loadUserId"><strong>User ID:</strong></label>
-                   <input type="text" class="form-control" id="loadUserId" placeholder="Enter User ID">
-               </div>
-               <div class="form-group">
-<label for="loadAmount"><strong>Amount:</strong></label>
-                   <input type="number" class="form-control" id="loadAmount" placeholder="Enter Amount" step="0.01">
-               </div>
-               <button type="submit" class="btn btn-primary">Load Funds</button>
-           </form>
-       </div>
-    
-<div id="authForm" style="display: none;">
-   <h2 class="funds-heading">Authorize (Withdraw)</h2>
-   <form id="authForm">
-       <div class="form-group">
-<label for="authUserId"><strong>User ID:</strong></label>
-           <input type="text" class="form-control" id="authUserId" placeholder="Enter User ID">
-       </div>
-       <div class="form-group">
-<label for="authAmount"><strong>Amount:</strong></label>
-           <input type="number" class="form-control" id="authAmount" placeholder="Enter Amount" step="0.01">
-       </div>
-       <button type="submit" class="btn btn-primary">Authorize (Withdraw)</button>
-   </form>
-</div>
-       <div class="transaction-history" id="transactionList" style="display: none;">
-         
-           <h2 class="funds-heading">Transaction History</h2>
-           <ul class="transaction-list"></ul>
-       </div>
-     
-   </div>
-   <script src="/js/bootstrap.bundle.min.js"></script>
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   <!-- SweetAlert2 JS -->
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-   <script>
-   $(document).ready(function () {
-    $('#loadButton').click(function () {
-        var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
-        if (userId === '') {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: 'Please enter User ID.',
-                confirmButtonColor: '#007bff'
-            });
-            return;
-        }
-        $('#loadForm').show();
-        $('#authForm').hide();
-        $('#transactionList').hide();
-        $('#totalBalance').show();
-        // Autofill user ID and disable input field
-        $('#loadUserId').val(userId).prop('disabled', true);
-    });
 
-    $('#authButton').click(function () {
-        var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
-        if (userId === '') {
-            // Show warning if User ID field is empty
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: 'Please enter User ID.',
-                confirmButtonColor: '#007bff'
-            });
-            return;
-        }
-        $('#authForm').show();
-        $('#loadForm').hide();
-        $('#transactionList').hide();
-        $('#totalBalance').show();
-        // Autofill user ID and disable input field
-        $('#authUserId').val(userId).prop('disabled', true);
-    });
+		<div class="form-group">
+			<input type="text" class="form-control" id="inputUserId" placeholder="Enter User ID">
+		</div>
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-primary" id="loadButton">Load Funds (Deposit)</button>
+			<button type="button" class="btn btn-primary" id="authButton">Authorize (Withdraw)</button>
+			<button type="button" class="btn btn-primary" id="historyButton">View Transaction History</button>
+			<button type="button" class="btn btn-primary" id="balanceButton">View Total Balance</button>
 
-    $('#historyButton').click(function () {
-        var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
-        if (userId === '') {
-            // Show warning if User ID field is empty
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: 'Please enter User ID.',
-                confirmButtonColor: '#007bff'
-            });
-            return;
-        }
-        fetchAndDisplayTransactionHistory(userId);
-        $('#transactionList').show();
-        $('#loadForm').hide();
-        $('#authForm').hide();
-    });
-         function fetchAndDisplayTransactionHistory(userId) {
-    $.ajax({
-        type: 'GET',
-        url: '/transaction-history?userId=' + userId,
-        success: function (data) {
-            if (data.length === 0) {
-                
-                //$('#transactionList').html('<p>No transactions have occurred.</p>');
-           
-           Swal.fire({
-                    icon: 'info',
-                    title: 'No Transactions',
-                    text: 'No transactions have occurred.',
-                    confirmButtonColor: '#007bff'
-                }); 
-            
-            } else {
-                displayTransactionHistory(data);
-                calculateTotalBalance(data);
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-}
+		</div>
+		<div id="loadForm" style="display: none;">
+			<h2 class="funds-heading">Load Funds</h2>
+			<form id="loadForm">
+				<div class="form-group">
+					<label for="loadUserId"><strong>User ID:</strong></label>
+					<input type="text" class="form-control" id="loadUserId" placeholder="Enter User ID">
+				</div>
+				<div class="form-group">
+					<label for="loadAmount"><strong>Amount:</strong></label>
+					<input type="number" class="form-control" id="loadAmount" placeholder="Enter Amount" step="0.01">
+				</div>
+				<button type="submit" class="btn btn-primary">Load Funds</button>
+			</form>
+		</div>
 
-           function displayTransactionHistory(history) {
-               var transactionList = $('#transactionList');
-               transactionList.empty(); // Clear existing history
-               history.forEach(function (transaction) {
-                   var date = new Date(transaction.timestamp);
-                   var formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                   var formattedTime = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric' });
-                   var transactionItem = $('<li class="transaction-item"></li>').html(
-                       '<strong>Type:</strong> ' + transaction.type + '<br>' +
-                       '<strong>Amount:</strong> $' + transaction.amount.toFixed(2) + '<br>' +
-                       '<strong>Status:</strong> ' + transaction.status + '<br>' +
-                       '<strong>Date:</strong> ' + formattedDate + '<br>' +
-                       '<strong>Time:</strong> ' + formattedTime
-                   );
-                   if (transaction.status === 'Failed') {
-                       transactionItem.addClass('failed');
-                   }
-                   transactionList.prepend(transactionItem); // Prepend transaction item to show new history on top
-               });
-           }
-      
-function calculateTotalBalance(history) {
-   var totalBalance = 0;
-   if (history.length === 0) {
-       totalBalance = 0;
-   } else {
-       history.forEach(function (transaction) {
-           if (transaction.type === 'Load') {
-               totalBalance += transaction.amount;
-           } else if (transaction.type === 'Authorization' && transaction.status === 'Success') {
-               totalBalance -= transaction.amount;
-           }
-       });
-   }
-   $('#totalBalanceAmount').text(totalBalance.toFixed(2));
-   $('#totalBalance').show();
-}
- $('#loadForm').submit(function (event) {
-   event.preventDefault();
-   var userId = $('#loadUserId').val();
-   var amount = $('#loadAmount').val();
-   if (!userId || !amount) {
-       Swal.fire({
-           icon: 'warning',
-           title: 'Warning',
-           text: 'Please fill in all the fields.',
-           confirmButtonColor: '#007bff'
-       });
-       return;
-   }
-   if (parseFloat(amount) <= 0) {
-       Swal.fire({
-           icon: 'warning',
-           title: 'Warning',
-           text: 'Amount must be greater than 0.',
-           confirmButtonColor: '#007bff'
-       });
-       return;
-   }
-   $.ajax({
-       type: 'PUT',
-       url: '/loads',
-       contentType: 'application/json',
-       data: JSON.stringify({ userId: userId, amount: parseFloat(amount) }),
-       success: function (data) {
-			
-			 $('#loadAmount').val('');
-			
-			
-           $('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
-           fetchAndDisplayTransactionHistory(userId); 
-           Swal.fire({
-               icon: 'success',
-               title: 'Success',
-                html: '<div><span style="color: green; font-weight: bold">$' + parseFloat(amount).toFixed(2) + '</span> loaded successfully!</div><div>Total Balance: <span style="color: red; font-weight: bold">$' + data.toFixed(2) + '</span></div>',
-               
+		<div id="authForm" style="display: none;">
+			<h2 class="funds-heading">Authorize (Withdraw)</h2>
+			<form id="authForm">
+				<div class="form-group">
+					<label for="authUserId"><strong>User ID:</strong></label>
+					<input type="text" class="form-control" id="authUserId" placeholder="Enter User ID">
+				</div>
+				<div class="form-group">
+					<label for="authAmount"><strong>Amount:</strong></label>
+					<input type="number" class="form-control" id="authAmount" placeholder="Enter Amount" step="0.01">
+				</div>
+				<button type="submit" class="btn btn-primary">Authorize (Withdraw)</button>
+			</form>
+		</div>
+		<div class="transaction-history" id="transactionList" style="display: none;">
 
-               
-               
-               confirmButtonColor: '#007bff'
-           });
-       },
-       error: function (xhr, status, error) {
-           console.error(xhr.responseText);
-       }
-   });
-});
-$('#authForm').submit(function (event) {
-   event.preventDefault();
-   var userId = $('#authUserId').val();
-   var amount = $('#authAmount').val();
-   if (!userId || !amount) {
-       Swal.fire({
-           icon: 'warning',
-           title: 'Warning',
-           text: 'Please fill in all the fields.',
-           confirmButtonColor: '#007bff'
-       });
-       return;
-   }
-   if (parseFloat(amount) <= 0) {
-       Swal.fire({
-           icon: 'warning',
-           title: 'Warning',
-           text: 'Amount must be greater than 0.',
-           confirmButtonColor: '#007bff'
-       });
-       return;
-   }
-   $.ajax({
-       type: 'PUT',
-       url: '/authorizations',
-       contentType: 'application/json',
-       data: JSON.stringify({ userId: userId, amount: parseFloat(amount) }),
-       success: function (data) {
-			
-			
-			$('#authAmount').val('');
-			
-           console.log("Authorization request successful");
-           $('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
-           fetchAndDisplayTransactionHistory(userId);
-           // Display success message
-           Swal.fire({
-               icon: 'success',
-               title: 'Success',
-               // text: '$' + parseFloat(amount).toFixed(2) + ' authorized successfully! Your new balance is $' + data.toFixed(2),
-              
-              
-                html: '<div><span style="color: green; font-weight: bold">$' + parseFloat(amount).toFixed(2) + ' </span>  authorized successfully!</div><div>Total Balance:  <span style="color: red; font-weight: bold">$' + data.toFixed(2) + '</span></div>',
+			<h2 class="funds-heading">Transaction History</h2>
+			<ul class="transaction-list"></ul>
+		</div>
 
-               confirmButtonColor: '#007bff'
-           });
-       },
-       error: function (xhr, status, error) {
-           console.error(xhr.responseText);
-           if (xhr.status === 400) {
-               addToTransactionHistory(userId, amount, "Authorization", new Date(), "Failed");
-               Swal.fire({
-                   icon: 'error',
-                   title: 'Error',
-                   text: 'Insufficient balance to authorize transaction!',
-                   confirmButtonColor: '#007bff'
-               });
-           }
-       }
-   });
-});
-           $('#userIdDisplay').on('input', function () {
-               var userId = $(this).text();
-               fetchAndDisplayTransactionHistory(userId);
-           });
-           var initialUserId = $('#userIdDisplay').text();
-           fetchAndDisplayTransactionHistory(initialUserId);
-       });
-       
-       
-       
-       
-$('#balanceButton').click(function () {
-    var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
-    if (userId === '') {
-        // Show warning if User ID field is empty
-        Swal.fire({
-            icon: 'warning',
-            title: 'Warning',
-            text: 'Please enter User ID.',
-            confirmButtonColor: '#007bff'
-        });
-        return;
-    }
-    calculateAndDisplayTotalBalance(userId);
-});
+	</div>
+	<script src="/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- SweetAlert2 JS -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		$(document).ready(function () {
+			$('#loadButton').click(function () {
+				var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
+				if (userId === '') {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Warning',
+						text: 'Please enter User ID.',
+						confirmButtonColor: '#007bff'
+					});
+					return;
+				}
+				$('#loadForm').show();
+				$('#authForm').hide();
+				$('#transactionList').hide();
+				$('#totalBalance').show();
+				// Autofill user ID and disable input field
+				$('#loadUserId').val(userId).prop('disabled', true);
+			});
 
-function calculateAndDisplayTotalBalance(userId) {
-    $.ajax({
-        type: 'GET',
-        url: '/total-balance?userId=' + userId, // Assuming there's an endpoint to fetch total balance
-        success: function (totalBalance) {
-            Swal.fire({
-                icon: 'info',
-                title: 'Total Balance',
-                text: 'Your total balance is $' + totalBalance.toFixed(2),
-                confirmButtonColor: '#007bff'
-            });
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-}
+			$('#authButton').click(function () {
+				var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
+				if (userId === '') {
+					// Show warning if User ID field is empty
+					Swal.fire({
+						icon: 'warning',
+						title: 'Warning',
+						text: 'Please enter User ID.',
+						confirmButtonColor: '#007bff'
+					});
+					return;
+				}
+				$('#authForm').show();
+				$('#loadForm').hide();
+				$('#transactionList').hide();
+				$('#totalBalance').show();
+				// Autofill user ID and disable input field
+				$('#authUserId').val(userId).prop('disabled', true);
+			});
 
-       
-       
-       function addToTransactionHistory(userId, amount, type, timestamp, status) {
-           var transactionList = $('#transactionList');
-           var date = new Date(timestamp);
-           var formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-           var formattedTime = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric' });
-           var transactionItem = $('<li class="transaction-item failed"></li>').html(
-               '<strong>Type:</strong> ' + type + '<br>' +
-               '<strong>Amount:</strong> $' + parseFloat(amount).toFixed(2) + '<br>' +
-               '<strong>Status:</strong> ' + status + '<br>' +
-               '<strong>Date:</strong> ' + formattedDate + '<br>' +
-               '<strong>Time:</strong> ' + formattedTime
-           );
-           transactionList.prepend(transactionItem); 
-       }
-   </script>
+			$('#historyButton').click(function () {
+				var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
+				if (userId === '') {
+					// Show warning if User ID field is empty
+					Swal.fire({
+						icon: 'warning',
+						title: 'Warning',
+						text: 'Please enter User ID.',
+						confirmButtonColor: '#007bff'
+					});
+					return;
+				}
+				fetchAndDisplayTransactionHistory(userId);
+				$('#transactionList').show();
+				$('#loadForm').hide();
+				$('#authForm').hide();
+			});
+			function fetchAndDisplayTransactionHistory(userId) {
+				$.ajax({
+					type: 'GET',
+					url: '/transaction-history?userId=' + userId,
+					success: function (data) {
+						if (data.length === 0) {
+
+							//$('#transactionList').html('<p>No transactions have occurred.</p>');
+
+							Swal.fire({
+								icon: 'info',
+								title: 'No Transactions',
+								text: 'No transactions have occurred.',
+								confirmButtonColor: '#007bff'
+							});
+
+						} else {
+							displayTransactionHistory(data);
+							calculateTotalBalance(data);
+						}
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+					}
+				});
+			}
+
+			function displayTransactionHistory(history) {
+				var transactionList = $('#transactionList');
+				transactionList.empty(); // Clear existing history
+				history.forEach(function (transaction) {
+					var date = new Date(transaction.timestamp);
+					var formattedDate = date.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
+					var formattedTime = date.toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric', second: 'numeric'});
+					var transactionItem = $('<li class="transaction-item"></li>').html(
+						'<strong>Type:</strong> ' + transaction.type + '<br>' +
+						'<strong>Amount:</strong> $' + transaction.amount.toFixed(2) + '<br>' +
+						'<strong>Status:</strong> ' + transaction.status + '<br>' +
+						'<strong>Date:</strong> ' + formattedDate + '<br>' +
+						'<strong>Time:</strong> ' + formattedTime
+					);
+					if (transaction.status === 'Failed') {
+						transactionItem.addClass('failed');
+					}
+					transactionList.prepend(transactionItem); // Prepend transaction item to show new history on top
+				});
+			}
+
+			function calculateTotalBalance(history) {
+				var totalBalance = 0;
+				if (history.length === 0) {
+					totalBalance = 0;
+				} else {
+					history.forEach(function (transaction) {
+						if (transaction.type === 'Load') {
+							totalBalance += transaction.amount;
+						} else if (transaction.type === 'Authorization' && transaction.status === 'Success') {
+							totalBalance -= transaction.amount;
+						}
+					});
+				}
+				$('#totalBalanceAmount').text(totalBalance.toFixed(2));
+				$('#totalBalance').show();
+			}
+			$('#loadForm').submit(function (event) {
+				event.preventDefault();
+				var userId = $('#loadUserId').val();
+				var amount = $('#loadAmount').val();
+				if (!userId || !amount) {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Warning',
+						text: 'Please fill in all the fields.',
+						confirmButtonColor: '#007bff'
+					});
+					return;
+				}
+				if (parseFloat(amount) <= 0) {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Warning',
+						text: 'Amount must be greater than 0.',
+						confirmButtonColor: '#007bff'
+					});
+					return;
+				}
+				$.ajax({
+					type: 'PUT',
+					url: '/loads',
+					contentType: 'application/json',
+					data: JSON.stringify({userId: userId, amount: parseFloat(amount)}),
+					success: function (data) {
+
+						$('#loadAmount').val('');
+
+
+						$('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
+						fetchAndDisplayTransactionHistory(userId);
+						Swal.fire({
+							icon: 'success',
+							title: 'Success',
+							html: '<div><span style="color: green; font-weight: bold">$' + parseFloat(amount).toFixed(2) + '</span> loaded successfully!</div><div>Total Balance: <span style="color: red; font-weight: bold">$' + data.toFixed(2) + '</span></div>',
+
+
+
+
+							confirmButtonColor: '#007bff'
+						});
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+					}
+				});
+			});
+			$('#authForm').submit(function (event) {
+				event.preventDefault();
+				var userId = $('#authUserId').val();
+				var amount = $('#authAmount').val();
+				if (!userId || !amount) {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Warning',
+						text: 'Please fill in all the fields.',
+						confirmButtonColor: '#007bff'
+					});
+					return;
+				}
+				if (parseFloat(amount) <= 0) {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Warning',
+						text: 'Amount must be greater than 0.',
+						confirmButtonColor: '#007bff'
+					});
+					return;
+				}
+				$.ajax({
+					type: 'PUT',
+					url: '/authorizations',
+					contentType: 'application/json',
+					data: JSON.stringify({userId: userId, amount: parseFloat(amount)}),
+					success: function (data) {
+
+
+						$('#authAmount').val('');
+
+						console.log("Authorization request successful");
+						$('#balanceDisplay').html('<span class="welcome-text">User ID:</span> <span id="userIdDisplay" contenteditable="true">' + userId + '</span> | <span class="welcome-text">Current Balance:</span> $<span id="balanceAmount">' + data.toFixed(2) + '</span>');
+						fetchAndDisplayTransactionHistory(userId);
+						// Display success message
+						Swal.fire({
+							icon: 'success',
+							title: 'Success',
+							// text: '$' + parseFloat(amount).toFixed(2) + ' authorized successfully! Your new balance is $' + data.toFixed(2),
+
+
+							html: '<div><span style="color: green; font-weight: bold">$' + parseFloat(amount).toFixed(2) + ' </span>  authorized successfully!</div><div>Total Balance:  <span style="color: red; font-weight: bold">$' + data.toFixed(2) + '</span></div>',
+
+							confirmButtonColor: '#007bff'
+						});
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+						if (xhr.status === 400) {
+							addToTransactionHistory(userId, amount, "Authorization", new Date(), "Failed");
+							Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								text: 'Insufficient balance to authorize transaction!',
+								confirmButtonColor: '#007bff'
+							});
+						}
+					}
+				});
+			});
+			$('#userIdDisplay').on('input', function () {
+				var userId = $(this).text();
+				fetchAndDisplayTransactionHistory(userId);
+			});
+			var initialUserId = $('#userIdDisplay').text();
+			fetchAndDisplayTransactionHistory(initialUserId);
+		});
+
+
+
+
+		$('#balanceButton').click(function () {
+			var userId = $('#inputUserId').val().trim(); // Get trimmed User ID value
+			if (userId === '') {
+				// Show warning if User ID field is empty
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Please enter User ID.',
+					confirmButtonColor: '#007bff'
+				});
+				return;
+			}
+			calculateAndDisplayTotalBalance(userId);
+		});
+
+		function calculateAndDisplayTotalBalance(userId) {
+			$.ajax({
+				type: 'GET',
+				url: '/total-balance?userId=' + userId, // Assuming there's an endpoint to fetch total balance
+				success: function (totalBalance) {
+					Swal.fire({
+						icon: 'info',
+						title: 'Total Balance',
+						text: 'Your total balance is $' + totalBalance.toFixed(2),
+						confirmButtonColor: '#007bff'
+					});
+				},
+				error: function (xhr, status, error) {
+					console.error(xhr.responseText);
+				}
+			});
+		}
+
+
+
+		function addToTransactionHistory(userId, amount, type, timestamp, status) {
+			var transactionList = $('#transactionList');
+			var date = new Date(timestamp);
+			var formattedDate = date.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
+			var formattedTime = date.toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric', second: 'numeric'});
+			var transactionItem = $('<li class="transaction-item failed"></li>').html(
+				'<strong>Type:</strong> ' + type + '<br>' +
+				'<strong>Amount:</strong> $' + parseFloat(amount).toFixed(2) + '<br>' +
+				'<strong>Status:</strong> ' + status + '<br>' +
+				'<strong>Date:</strong> ' + formattedDate + '<br>' +
+				'<strong>Time:</strong> ' + formattedTime
+			);
+			transactionList.prepend(transactionItem);
+		}
+	</script>
 </body>
+
 </html>
