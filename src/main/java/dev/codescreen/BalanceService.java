@@ -25,6 +25,7 @@ public class BalanceService {
 //    public List<Transaction> getTransactionHistory(@RequestParam int userId) {
 //        return transactionHistory.getOrDefault(userId, new ArrayList<>());
 //    }
+
 	@GetMapping("/transaction-history")
 	public List<Transaction> getTransactionHistory(@RequestParam(name = "userId") int userId) {
 		return transactionHistory.getOrDefault(userId, new ArrayList<>());
